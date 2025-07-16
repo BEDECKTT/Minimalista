@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Minimalista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .product-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .product-image {
+            max-width: 80%;
+            max-height: 70vh;
+            object-fit: contain;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.02);
+        }
+
+        .product-info {
+            text-align: center;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .product-slide.active .product-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 400;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .product-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #777;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        .add-to-cart {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #333;
+        }
+
+        .floating-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .floating-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .floating-button i {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .pagination {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .pagination-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            background-color: #000;
+            transform: scale(1.2);
+        }
+
+        .navigation-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover .navigation-arrow {
+            opacity: 1;
+        }
+
+        .navigation-arrow.left {
+            left: 20px;
+        }
+
+        .navigation-arrow.right {
+            right: 20px;
+        }
+
+        .navigation-arrow i {
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="product-slider">
+            <div class="product-slide active">
+                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Reloj de lujo" class="product-image">
+                <div class="product-info">
+                    <h1 class="product-title">Reloj Chronograph</h1>
+                    <p class="product-price">$1,250.00</p>
+                    <p class="product-description">Reloj de pulsera con movimiento automático, caja de acero inoxidable y correa de cuero genuino. Resistente al agua hasta 50 metros.</p>
+                    <button class="add-to-cart">AÑADIR AL CARRITO</button>
+                </div>
+            </div>
+            <div class="product-slide">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Auriculares premium" class="product-image">
+                <div class="product-info">
+                    <h1 class="product-title">Auriculares Studio Pro</h1>
+                    <p class="product-price">$349.99</p>
+                    <p class="product-description">Auriculares over-ear con cancelación de ruido activa y sonido de alta fidelidad. Construcción en aluminio y cuero memory foam.</p>
+                    <button class="add-to-cart">AÑADIR AL CARRITO</button>
+                </div>
+            </div>
+            <div class="product-slide">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Zapatillas deportivas" class="product-image">
+                <div class="product-info">
+                    <h1 class="product-title">Zapatillas Runner X</h1>
+                    <p class="product-price">$189.00</p>
+                    <p class="product-description">Zapatillas de running con tecnología de amortiguación avanzada y diseño aerodinámico. Ideal para corredores de alto rendimiento.</p>
+                    <button class="add-to-cart">AÑADIR AL CARRITO</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="floating-buttons">
+            <div class="floating-button" id="favorites-btn">
+                <i class="far fa-heart"></i>
+            </div>
+            <div class="floating-button" id="cart-btn">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <div class="pagination-dot active" data-index="0"></div>
+            <div class="pagination-dot" data-index="1"></div>
+            <div class="pagination-dot" data-index="2"></div>
+        </div>
+
+        <div class="navigation-arrow left" id="prev-btn">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="navigation-arrow right" id="next-btn">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.querySelector('.product-slider');
+            const slides = document.querySelectorAll('.product-slide');
+            const dots = document.querySelectorAll('.pagination-dot');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const cartBtn = document.getElementById('cart-btn');
+            const favBtn = document.getElementById('favorites-btn');
+            
+            let currentIndex = 0;
+            const totalSlides = slides.length;
+            let startX, moveX;
+            let isDragging = false;
+
+            function updateSlider() {
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                // Update active class for slides
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === currentIndex);
+                });
+                
+                // Update pagination dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            function goToSlide(index) {
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+                currentIndex = index;
+                updateSlider();
+            }
+
+            // Click events for pagination dots
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    goToSlide(parseInt(this.getAttribute('data-index')));
+                });
+            });
+
+            // Navigation buttons
+            prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+            nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+            // Touch events for swipe navigation
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+
+            slider.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                moveX = e.touches[0].clientX;
+                const diff = moveX - startX;
+                slider.style.transform = `translateX(calc(-${currentIndex * 100}% + ${diff}px))`;
+            });
+
+            slider.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                const diff = moveX - startX;
+                
+                if (diff > 50) {
+                    goToSlide(currentIndex - 1); // Swipe right
+                } else if (diff < -50) {
+                    goToSlide(currentIndex + 1); // Swipe left
+                } else {
+                    updateSlider(); // Return to current position
+                }
+            });
+
+            // Mouse events for desktop swipe simulation
+            slider.addEventListener('mousedown', (e) => {
+                startX = e.clientX;
+                isDragging = true;
+                e.preventDefault(); // Prevent text selection
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                moveX = e.clientX;
+                const diff = moveX - startX;
+                slider.style.transform = `translateX(calc(-${currentIndex * 100}% + ${diff}px))`;
+            });
+
+            document.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                const diff = moveX - startX;
+                
+                if (diff > 50) {
+                    goToSlide(currentIndex - 1); // Swipe right
+                } else if (diff < -50) {
+                    goToSlide(currentIndex + 1); // Swipe left
+                } else {
+                    updateSlider(); // Return to current position
+                }
+            });
+
+            // Floating buttons functionality
+            cartBtn.addEventListener('click', () => {
+                alert('Carrito de compras abierto');
+                // Aquí iría la lógica para mostrar el carrito
+            });
+
+            favBtn.addEventListener('click', function() {
+                this.querySelector('i').classList.toggle('far');
+                this.querySelector('i').classList.toggle('fas');
+                alert('Producto añadido a favoritos');
+                // Aquí iría la lógica para añadir a favoritos
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    goToSlide(currentIndex - 1);
+                } else if (e.key === 'ArrowRight') {
+                    goToSlide(currentIndex + 1);
+                }
+            });
+
+            // Auto-rotate slides (opcional)
+            // setInterval(() => goToSlide(currentIndex + 1), 5000);
+        });
+    </script>
+</body>
+</html>
